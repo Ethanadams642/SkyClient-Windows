@@ -55,13 +55,22 @@ namespace SkyblockClient
 			CommonOpenFileDialog dialog = new CommonOpenFileDialog();
 
 			string initialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-			if (Directory.Exists(Path.Combine(initialDirectory, ".minecraft")))
+			string dotMinecraftPath = Path.Combine(initialDirectory, ".minecraft");
+			string minecraftPath = Path.Combine(initialDirectory, "minecraft");
+
+			// Set initial directory to .minecraft or minecraft if either exists
+			if (Directory.Exists(dotMinecraftPath))
 			{
-				initialDirectory = Path.Combine(initialDirectory, ".minecraft");
+				initialDirectory = dotMinecraftPath;
 			}
+    		else if (Directory.Exists(minecraftPath))
+    		{
+        		initialDirectory = minecraftPath;
+    		}
 
 			dialog.InitialDirectory = initialDirectory;
 			dialog.IsFolderPicker = true;
+
 			if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
 			{
 				bool valid = Utils.ValidateMinecraftDirectory(dialog.FileName);
